@@ -1,19 +1,30 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import pygame
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
+pygame.init()
+##Tanımlar
+renk1= (119,224,255)
+GENISLIK = 500
+YUKSEKLIK = 700
+arkaplanRengi = renk1
+##
+oyuncu = pygame.image.load('karakter.png')
+fps = 60
+genel_font = pygame.font.Font('futurab.ttf',16)
+sayac = pygame.time.Clock()
 
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+#EKRAN
 
+ekran = pygame.display.set_mode([GENISLIK,YUKSEKLIK])
+pygame.display.set_caption('Emir Ebrar the Game')
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+calisiyorMu = True
+while calisiyorMu == True:
+    sayac.tick(fps)
+    ekran.fill(arkaplanRengi)
 
+    for olay in pygame.event.get():
+        if olay.type == pygame.QUIT:
+            calisiyorMu = False
 
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    pygame.display.flip()
+pygame.quit()
