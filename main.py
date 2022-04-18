@@ -16,13 +16,12 @@ sayac = pygame.time.Clock()
 ##Değişkenler
 karakter_konum_x = 200
 karakter_konum_y = 550
-ilk_platform = [200, 650, 80, 10]
-platformlar = [ilk_platform,[300,410,80,10],[200,390,80,10],[100,190,80,10],[300,190,80,10],[200,40,80,10]]
+platformlar = [[200, 650, 80, 10], [300, 450, 80, 10], [200, 350, 80, 10], [100, 190, 80, 10], [300, 190, 80, 10],
+               [200, 40, 80, 10]]
 zipliyorMu = False
 y_change = 0
 x_change = 0
 karakter_hizi = 5
-
 son_puan = 0
 super_ziplama = 2
 son_ziplama = 0
@@ -36,11 +35,11 @@ pygame.display.set_caption('Emir Ebrar the Game')
 
 
 # functions
-def karakteri_guncelle(konum_y):
+def karakter_ziplama(konum_y):
     global zipliyorMu
     global y_change
     ziplama_boyutu = 20
-    yercekimi = .5
+    yercekimi = .4
     if zipliyorMu:
         y_change = -ziplama_boyutu
         zipliyorMu = False
@@ -52,7 +51,7 @@ def karakteri_guncelle(konum_y):
 # platform hareketi
 def platformlari_guncelle(listem, konum_y, change):
     global puan
-    if konum_y < 250 and change < 0:
+    if konum_y < 450 and change < 0:
         for i in range(len(listem)):
             listem[i][1] -= change
     else:
@@ -68,35 +67,32 @@ def tas_degiyorMu(tas_listesi, jump):
     global karakter_konum_x
     global karakter_konum_y
     global y_change  # karakter yukarı mı gidiyor aşağı mı gdiyor kontrolü
-    for i in range(len(tas_listesi)):
-        if tas_listesi[i].colliderect(
-                [karakter_konum_x, karakter_konum_y + 60, 35, 10]) and jump is False and y_change > 0:
+    for a in range(len(tas_listesi)):
+        if tas_listesi[a].colliderect(
+                [karakter_konum_x + 20, karakter_konum_y + 60, 35, 10]) and jump is False and y_change > 0:
             jump = True
         return jump
 
 
 calisiyorMu = True
-while calisiyorMu == True:
+while calisiyorMu:
     sayac.tick(fps)
     ekran.fill(arkaplanRengi)
     ekran.blit(oyuncu, (karakter_konum_x, karakter_konum_y))
 
     taslar = []
 
-    puan_metni = genel_font.render('High Score:' +str(yuksek_puan), True, Rsiyah, arkaplanRengi )
-    ekran.blit(puan_metni, (280,0))
+    puan_metni = genel_font.render('High Score:' + str(yuksek_puan), True, Rsiyah, arkaplanRengi)
+    ekran.blit(puan_metni, (280, 0))
     yuksek_puan_metni = genel_font.render('Score:' + str(puan), True, Rsiyah, arkaplanRengi)
     ekran.blit(puan_metni, (320, 20))
 
     puan_metni = genel_font.render('Air Jumps(Spacebar):' + str(yuksek_puan), True, Rsiyah, arkaplanRengi)
     ekran.blit(puan_metni, (10, 10))
+
     if game_over:
         game_over_metni = genel_font.render('GAME OVER: Spacebar to restart!' + str(puan), True, Rsiyah, arkaplanRengi)
         ekran.blit(game_over_metni, (320, 20))
-
-    for i in range(len(platformlar)):
-        tas = pygame.draw.rect(ekran, Rsiyah, platformlar[i], 0, 3)
-        taslar.append(tas)
 
     for olay in pygame.event.get():
         if olay.type == pygame.QUIT:
@@ -112,11 +108,11 @@ while calisiyorMu == True:
                 son_puan = 0
                 super_ziplama = 2
                 son_ziplama = 0
-                ilk_platform = [200, 650, 80, 10]
-                platformlar = [ilk_platform,[300,410,80,10],[200,390,80,10],[100,190,80,10],[300,190,80,10],[200,40,80,10]]
-            if olay.key == pygame.K_SPACE and not game_over and super_ziplama > 0:
-                super_ziplama -= 1
-                y_change = -10
+                platformlar = [[200, 650, 80, 10], [300, 450, 80, 10], [200, 350, 80, 10], [100, 190, 80, 10],
+                               [300, 190, 80, 10], [200, 40, 80, 10]]
+            # if olay.key == pygame.K_SPACE and not game_over and super_ziplama > 0:
+            #    super_ziplama -= 1
+            #    y_change = -10
             if olay.key == pygame.K_a or olay.key == pygame.K_LEFT:
                 x_change = -karakter_hizi
             if olay.key == pygame.K_d or olay.key == pygame.K_RIGHT:
@@ -128,40 +124,43 @@ while calisiyorMu == True:
             if olay.key == pygame.K_d or olay.key == pygame.K_RIGHT:
                 x_change = 0
 
+    for i in range(len(platformlar)):
+        tas = pygame.draw.rect(ekran, Rsiyah, platformlar[i], 1, 3)
+        taslar.append(tas)
+
     zipliyorMu = tas_degiyorMu(taslar, zipliyorMu)
     karakter_konum_x += x_change
 
-    if karakter_konum_y < 440:
-        karakter_konum_y= karakteri_guncelle(karakter_konum_y)
+    if karakter_konum_y < 650:
+        karakter_konum_y = karakter_ziplama(karakter_konum_y)
     else:
-        game_over=True
+        game_over = True
         y_change = 0
         x_change = 0
 
-    #karakter_konum_y = karakteri_guncelle(karakter_konum_y)
+    # karakter_konum_y = karakteri_guncelle(karakter_konum_y)
     platformlar = platformlari_guncelle(platformlar, karakter_konum_y, y_change)
     if karakter_konum_x < -20:
         karakter_konum_x = -20
-    elif karakter_konum_x >330:
-        karakter_konum_x=330
+    elif karakter_konum_x > 450:
+        karakter_konum_x = 450
 
     if x_change > 0:
         oyuncu = pygame.transform.scale(pygame.image.load('karakter.png'), (80, 80))
     elif x_change < 0:
-        oyuncu = pygame.transform.flip(pygame.transform.scale(pygame.image.load('karakter.png'), (80, 80)),1,0)
-
+        oyuncu = pygame.transform.flip(pygame.transform.scale(pygame.image.load('karakter.png'), (80, 80)), 1, 0)
 
     if puan > yuksek_puan:
-        yuksek_puan= puan
-
+        yuksek_puan = puan
 
     if puan - son_puan > 10:
-        son_puan=puan
-        background=(random.randint(1, 255), random.randint(1,255))
+        son_puan = puan
+        background = (random.randint(1, 255), random.randint(1, 255))
 
     if puan - son_ziplama > 40:
         son_ziplama = puan
         son_ziplama += 1
 
     pygame.display.flip()
+
 pygame.quit()
