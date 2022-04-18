@@ -58,8 +58,8 @@ def platformlari_guncelle(listem, konum_y, change):
     else:
         pass
     for item in range(len(listem)):
-        if listem[item][1] > 500:  # sayilari degistir
-            listem[item] = [random.randint(10, 320), random.randint(-50, -10), 70, 10]
+        if listem[item][1] > 650:  # sayilari degistir
+            listem[item] = [random.randint(200, 700), random.randint(0, 200), 80, 10]
             puan += 1
     return listem
 
@@ -145,7 +145,6 @@ while calisiyorMu == True:
     elif karakter_konum_x >330:
         karakter_konum_x=330
 
-    #pygame.display.flip()
     if x_change > 0:
         oyuncu = pygame.transform.scale(pygame.image.load('karakter.png'), (80, 80))
     elif x_change < 0:
