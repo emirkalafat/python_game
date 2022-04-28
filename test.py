@@ -42,10 +42,11 @@ def tas_degiyorMu(tas_listesi, j):
     global karakter_konum_x
     global karakter_konum_y
     global y_change #karakter yukarı mı gidiyor aşağı mı gdiyor kontrolü
-    for i in range(len(tas_listesi)):
-        if tas_listesi[i].colliderect([karakter_konum_x, karakter_konum_y + 60, 80 ,10]) and j == False and y_change > 0:
-            j = True
-        return j
+    for a in range(len(tas_listesi)):
+        for i in tas_listesi:
+            if i[a].colliderect([karakter_konum_x, karakter_konum_y + 60, 80 ,10]) and j == False and y_change > 0:
+                j = True
+    return j
 
 ##burada baştan denemye çalıştım yine olmadı ilk taşa zıplıyor diğerlerine zıplamıyor
 ##sinir oldum
@@ -55,7 +56,7 @@ while calisiyorMu == True:
     sayac.tick(fps)
     ekran.fill(arkaplanRengi)
     ekran.blit(oyuncu,(karakter_konum_x,karakter_konum_y))
-    taslar = []
+    taslar = [[]]
 
     for i in range(len(platformlar)):
         tas = pygame.draw.rect(ekran,Rsiyah,platformlar[i],0,3)

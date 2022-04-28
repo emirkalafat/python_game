@@ -29,12 +29,27 @@ platformlar = [[random.randrange(0,GENISLIK),random.randrange(0,YUKSEKLIK),80,10
 
 calisiyorMu = True
 while calisiyorMu:
+    karakter_konum_x = 200
+    karakter_konum_y = 550
+    zipliyorMu = False
+    y_change = 0
+    x_change = 0
+    karakter_hizi = 5
+    son_puan = 0
+    super_ziplama = 2
+    son_ziplama = 0
+    puan = 0
+    yuksek_puan = 0
+
     for olay in pygame.event.get():
         if olay.type == pygame.QUIT:
             calisiyorMu = False
     gameover = False
     basilanTus = pygame.key.get_pressed()
     while not gameover:
+        for olay in pygame.event.get():
+            if olay.type == pygame.QUIT:
+                calisiyorMu = False
         karakter_konum_x = 200
         karakter_konum_y = 550
         zipliyorMu = False
@@ -46,7 +61,6 @@ while calisiyorMu:
         son_ziplama = 0
         puan = 0
         yuksek_puan = 0
-
 
         sayac.tick(fps)
         ekran.fill(arkaplanRengi)
@@ -97,4 +111,4 @@ while calisiyorMu:
             gameover = False
     pygame.display.flip()
 pygame.quit()
-sys.exit()
+#sys.exit()
