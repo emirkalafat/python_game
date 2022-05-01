@@ -1,13 +1,30 @@
 import random
 import sys
 import pygame
+from tkinter import *
 
+oyuncuIsmi = ''
 
 class Plat:
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
+root=Tk()
+def retrieve_input():
+    global oyuncuIsmi
+    oyuncuIsmi = textBox.get("1.0", "end-1c")
+    root.destroy()
+    print(oyuncuIsmi)
+
+baslik = Label(root, text='İsminizi Giriniz')
+baslik.pack()
+textBox = Text(root, height=2, width=10)
+textBox.pack()
+tus = Button(root, height=1, width=10, text="Commit",command=lambda: retrieve_input())
+tus.pack()
+
+mainloop()
 
 pygame.init()
 # Tanımlar
@@ -126,7 +143,7 @@ while True:
     else:
         yaziGameOver = genel_font.render("GAME OVER", 1, (0, 0, 0))
         yaziReset = genel_font.render("yeniden oynamak için 'Boşluk' tuşuna basınız", 1, (0, 0, 0))
-        yaziGameOverPuan = genel_font.render("Puanınız " + str(puan), 1, (0, 0, 0))
+        yaziGameOverPuan = genel_font.render(oyuncuIsmi + "'nin puanı " + str(puan), 1, (0, 0, 0))
         ekran.blit(yaziGameOver, (170, 300))
         ekran.blit(yaziGameOverPuan, (160, 330))
         ekran.blit(yaziReset, (50, 550))
