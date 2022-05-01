@@ -13,7 +13,7 @@ class Plat:
 
 
 root = Tk()
-
+root.title('İsim Girişi')
 
 def retrieve_input():
     global oyuncuIsmi
@@ -26,7 +26,7 @@ baslik = Label(root, text='İsminizi Giriniz')
 baslik.pack()
 textBox = Text(root, height=2, width=10)
 textBox.pack()
-tus = Button(root, height=1, width=10, text="Commit", command=lambda: retrieve_input())
+tus = Button(root, height=1, width=10, text="Giriş", command=lambda: retrieve_input())
 tus.pack()
 
 mainloop()
