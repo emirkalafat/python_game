@@ -5,23 +5,28 @@ from tkinter import *
 
 oyuncuIsmi = ''
 
+
 class Plat:
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
-root=Tk()
+
+root = Tk()
+
+
 def retrieve_input():
     global oyuncuIsmi
     oyuncuIsmi = textBox.get("1.0", "end-1c")
     root.destroy()
     print(oyuncuIsmi)
 
+
 baslik = Label(root, text='İsminizi Giriniz')
 baslik.pack()
 textBox = Text(root, height=2, width=10)
 textBox.pack()
-tus = Button(root, height=1, width=10, text="Commit",command=lambda: retrieve_input())
+tus = Button(root, height=1, width=10, text="Commit", command=lambda: retrieve_input())
 tus.pack()
 
 mainloop()
@@ -101,7 +106,7 @@ while True:
 
         # ekran reniginin her 30 puanda değişmesi
         if renkPuan == 30:
-            arkaplanRengi = (random.randrange(0,255),random.randrange(0,255),random.randrange(0,255))
+            arkaplanRengi = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255))
             renkPuan = 0
 
         # Süper Zıplama #
