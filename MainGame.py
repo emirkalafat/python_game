@@ -38,9 +38,9 @@ Rsiyah = (0, 0, 0)
 GENISLIK = 500
 YUKSEKLIK = 700
 arkaplanRengi = Rmavi
-oyuncuResmi = pygame.transform.scale(pygame.image.load('karakter.png'), (80, 80))
-platformResmi = pygame.transform.scale(pygame.image.load('platform.png'), (80, 10))
-genel_font = pygame.font.Font('futurab.ttf', 16)
+oyuncuResmi = pygame.transform.scale(pygame.image.load('assest/karakter.png'), (80, 80))
+platformResmi = pygame.transform.scale(pygame.image.load('assest/platform.png'), (80, 10))
+genel_font = pygame.font.Font('assest/futurab.ttf', 16)
 fps = 60
 # EKRAN
 ekran = pygame.display.set_mode((GENISLIK, YUKSEKLIK))
@@ -81,12 +81,12 @@ while True:
         tuslar = pygame.key.get_pressed()
         if tuslar[pygame.K_LEFT]:
             x -= 10
-            oyuncuResmi = pygame.transform.flip(pygame.transform.scale(pygame.image.load('karakter.png'), (80, 80)),
+            oyuncuResmi = pygame.transform.flip(pygame.transform.scale(pygame.image.load('assest/karakter.png'), (80, 80)),
                                                 True,
                                                 False)
         if tuslar[pygame.K_RIGHT]:
             x += 10
-            oyuncuResmi = pygame.transform.scale(pygame.image.load('karakter.png'), (80, 80))
+            oyuncuResmi = pygame.transform.scale(pygame.image.load('assest/karakter.png'), (80, 80))
         if x < -40:
             x = -40
         if x > GENISLIK - 40:
