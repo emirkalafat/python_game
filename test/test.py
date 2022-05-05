@@ -6,6 +6,8 @@ e1.grid(row=0, column=1)
 button = tk.Button(master, text='Stop', width=25, command=master.destroy).grid(row=1,column=1)
 tk.mainloop()
 
+print(0%30)
+
 #from tkinter import *
 #root=Tk()
 #def retrieve_input():
