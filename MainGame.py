@@ -55,8 +55,6 @@ def arkaplanRengiDegistir():
     global arkaplanRengi
     arkaplanRengi = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255))
 
-
-
 # EKRAN
 ekran = pygame.display.set_mode((GENISLIK, YUKSEKLIK))
 pygame.display.set_caption('Among Platforms')
@@ -74,11 +72,15 @@ ziplamaPuan = 0
 renkPuan = 0
 platformPuan = 0
 # # #
+tickCheck = 0
 superZiplamaHakki = 0
 superZiplamaUseTime = 0
 gameOver = False
 
 while True:
+    tickCheck += 1
+    if tickCheck == 60:
+        tickCheck = 0
     pygame.time.Clock().tick(fps)
     olaylar = pygame.event.get()
     for olay in olaylar:
@@ -131,15 +133,15 @@ while True:
             arkaplanRengiDegistir()
             renkPuan = 0
         # beğenilmeyen arkaplan renginin değiştirilmesi #
-        if tuslar[pygame.K_c]:
+        if tuslar[pygame.K_c] and tickCheck % 10 == 0:
             arkaplanRengiDegistir()
 
         # Süper Zıplama #
-        if ziplamaPuan == 30:
+        if ziplamaPuan == 60:
             superZiplamaHakki += 1
             ziplamaPuan = 0
 
-        if tuslar[pygame.K_SPACE] and superZiplamaHakki > 0:
+        if tuslar[pygame.K_SPACE] and superZiplamaHakki > 0 and tickCheck % 10 == 0:
             ziplama = -30
             superZiplamaHakki -= 1
             superZiplamaUseTime = 180
