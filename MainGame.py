@@ -132,7 +132,7 @@ while True:
         if renkPuan == 30:
             arkaplanRengiDegistir()
             renkPuan = 0
-        # beğenilmeyen arkaplan renginin değiştirilmesi #
+        # beğenilmeyen arkaplan renginin c tuşuna basarak değiştirilmesi #
         if tuslar[pygame.K_c] and tickCheck % 10 == 0:
             arkaplanRengiDegistir()
 
