@@ -1,37 +1,15 @@
 import random
 import sys
+from tkinter import messagebox
 import pygame
 from tkinter import *
 
-oyuncuIsmi = ''
-
-
+pygame.init()
 class Plat:
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
-
-root = Tk()
-root.title('İsim Girişi')
-
-def retrieve_input():
-    global oyuncuIsmi
-    oyuncuIsmi = textBox.get("1.0", "end-1c")
-    root.destroy()
-    print(oyuncuIsmi)
-
-
-baslik = Label(root, text='İsminizi Giriniz')
-baslik.pack()
-textBox = Text(root, height=2, width=10)
-textBox.pack()
-tus = Button(root, height=1, width=10, text="Giriş", command=lambda: retrieve_input())
-tus.pack()
-
-mainloop()
-
-pygame.init()
 # Tanımlar
 Rmavi = (119, 224, 255)
 Rsiyah = (0, 0, 0)
@@ -42,6 +20,43 @@ oyuncuResmi = pygame.transform.scale(pygame.image.load('assest/karakter.png'), (
 platformResmi = pygame.transform.scale(pygame.image.load('assest/platform.png'), (80, 10))
 genel_font = pygame.font.Font('assest/futurab.ttf', 16)
 fps = 60
+oyuncuIsmi = "Oyuncu1"
+
+root = Tk()
+root.title('İsim Girişi')
+root.geometry("300x75+300+200")
+
+def retrieve_input():
+    global oyuncuIsmi
+    oyuncuIsmi = textBox.get("1.0", "end-1c")
+    messagebox.showinfo('Hoş Geldiniz.',f'İsminiz {oyuncuIsmi} olarak belirlendi.\nEğer arkaplan rengi hoşunuza gitmezse \'C\' tuşuna basınız.')
+    root.destroy()
+    print(oyuncuIsmi)
+
+baslik = Label(root, text='İsminizi Giriniz')
+baslik.pack()
+textBox = Text(root, height=1, width=20)
+textBox.pack()
+tus = Button(root, height=1, width=10, text="Giriş", command=lambda: retrieve_input())
+tus.pack()
+
+mainloop()
+
+def seviyeAdi(seviye):
+    switcher = {
+        0: "easy",
+        1: "normal",
+        2: "hard",
+        3: "extreme",
+    }
+    return switcher.get(seviye,"nothing")
+
+def arkaplanRengiDegistir():
+    global arkaplanRengi
+    arkaplanRengi = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255))
+
+
+
 # EKRAN
 ekran = pygame.display.set_mode((GENISLIK, YUKSEKLIK))
 pygame.display.set_caption('Among Platforms')
@@ -53,9 +68,12 @@ y = 100
 dy = 0.0
 h = 200
 ziplama = -20
+# puanlar
 puan = 0
 ziplamaPuan = 0
 renkPuan = 0
+platformPuan = 0
+# # #
 superZiplamaHakki = 0
 superZiplamaUseTime = 0
 gameOver = False
@@ -81,9 +99,7 @@ while True:
         tuslar = pygame.key.get_pressed()
         if tuslar[pygame.K_LEFT]:
             x -= 10
-            oyuncuResmi = pygame.transform.flip(pygame.transform.scale(pygame.image.load('assest/karakter.png'), (80, 80)),
-                                                True,
-                                                False)
+            oyuncuResmi = pygame.transform.flip(pygame.transform.scale(pygame.image.load('assest/karakter.png'), (80, 80)),True,False)
         if tuslar[pygame.K_RIGHT]:
             x += 10
             oyuncuResmi = pygame.transform.scale(pygame.image.load('assest/karakter.png'), (80, 80))
@@ -103,11 +119,20 @@ while True:
                     puan += 1
                     ziplamaPuan += 1
                     renkPuan += 1
+                    platformPuan += 1
+        # platformalın her 90 puanda azalması #
+        if len(platformlar) >= 5:
+            if platformPuan == 90:
+                platformlar.pop()
+                platformPuan = 0
 
         # ekran reniginin her 30 puanda değişmesi
         if renkPuan == 30:
-            arkaplanRengi = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255))
+            arkaplanRengiDegistir()
             renkPuan = 0
+        # beğenilmeyen arkaplan renginin değiştirilmesi #
+        if tuslar[pygame.K_c]:
+            arkaplanRengiDegistir()
 
         # Süper Zıplama #
         if ziplamaPuan == 30:
@@ -130,20 +155,20 @@ while True:
 
         # karakterin platformlar ile teması #
         for platform in platformlar:
-            if (x + 60 > platform.x) and (x + 20 < platform.x + 72) and (y + 74 > platform.y) and (
-                    y + 74 < platform.y + 20) and dy > 0:
+            if (x + 60 > platform.x) and (x + 20 < platform.x + 72) and (y + 74 > platform.y) and (y + 74 < platform.y + 20) and dy > 0:
                 dy = ziplama
 
         # EKRANDA YAZACAK YAZILAR #
         yaziSkor = genel_font.render("Puan " + str(puan), 1, (0, 0, 0))
         yaziSuperZiplama = genel_font.render("Süper Zıplama Hakkı " + str(superZiplamaHakki), 1, (0, 0, 0))
         yaziSuperZiplamaTime = genel_font.render("Süper Zıplama Süresi " + str(superZiplamaUseTime), 1, (0, 0, 0))
-
+        yaziZorlukSeviyesi = genel_font.render("Seviye: " + seviyeAdi((len(platformlar)-10)*(-1)), 1, (0, 0, 0))
         # YAZILARIN EKRANA YAZDIRILMASI #
         ekran.blit(yaziSkor, (GENISLIK - 10 - yaziSkor.get_width(), 10))
         ekran.blit(yaziSuperZiplama, (10, 10))
         if superZiplamaUseTime > 0:
             ekran.blit(yaziSuperZiplamaTime, (10, 30))
+        ekran.blit(yaziZorlukSeviyesi,(10,50))
         ekran.blit(oyuncuResmi, (x, y))
     else:
         yaziGameOver = genel_font.render("GAME OVER", 1, (0, 0, 0))
@@ -159,8 +184,12 @@ while True:
             dy = 0.0
             h = 200
             ziplama = -20
+            # puanlar
             puan = 0
             ziplamaPuan = 0
+            platformPuan = 0
+            renkPuan = 0
+            # # #
             superZiplamaHakki = 0
             superZiplamaUseTime = 0
             gameOver = False
