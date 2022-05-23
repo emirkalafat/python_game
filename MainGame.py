@@ -18,6 +18,9 @@ YUKSEKLIK = 700
 arkaplanRengi = Rmavi
 oyuncuResmi = pygame.transform.scale(pygame.image.load('assest/karakter.png'), (80, 80))
 platformResmi = pygame.transform.scale(pygame.image.load('assest/platform.png'), (80, 10))
+ziplamaSes = pygame.mixer.Sound("assest/ziplama.mp3")
+superZiplamaSes = pygame.mixer.Sound("assest/superJump.mp3")
+gameoverSes = pygame.mixer.Sound("assest/gameover.mp3")
 genel_font = pygame.font.Font('assest/futurab.ttf', 16)
 fps = 60
 oyuncuIsmi = "Oyuncu1"
@@ -95,6 +98,7 @@ while True:
 
         # karakter zeminin en altına indiğinde game over
         if y > YUKSEKLIK:
+            gameoverSes.play()
             gameOver = True
 
         # oyuncunun sağa sola hareketi #
@@ -158,6 +162,10 @@ while True:
         # karakterin platformlar ile teması #
         for platform in platformlar:
             if (x + 60 > platform.x) and (x + 20 < platform.x + 72) and (y + 74 > platform.y) and (y + 74 < platform.y + 20) and dy > 0:
+                if superZiplamaUseTime>0:
+                    superZiplamaSes.play()
+                else:
+                    ziplamaSes.play()
                 dy = ziplama
 
         # EKRANDA YAZACAK YAZILAR #
@@ -173,6 +181,7 @@ while True:
         ekran.blit(yaziZorlukSeviyesi,(10,50))
         ekran.blit(oyuncuResmi, (x, y))
     else:
+
         yaziGameOver = genel_font.render("GAME OVER", 1, (0, 0, 0))
         yaziReset = genel_font.render("yeniden oynamak için 'Boşluk' tuşuna basınız", 1, (0, 0, 0))
         yaziGameOverPuan = genel_font.render(oyuncuIsmi + "'nin puanı " + str(puan), 1, (0, 0, 0))
